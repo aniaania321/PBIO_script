@@ -1,4 +1,14 @@
 import random
+'''Album number: s31154
+Date: 6.05.2026
+In this program, I implemented the required functionalities as well as: 
+custom nucleotide distribution, translation, transcription, and finding motifs in the sequence.
+The program takes the desired length of the sequence, ID, description, and name from the user and generates 
+a sequence with either custom or random distributions. The DNA sequence is then saved to a FASTA format file, 
+and statistics and translated sequence are printed. Then, the user is prompted to give a motif to search in the sequence. 
+The program then prints the positions where the motif was found in the sequence and the mRNA sequence is saved to a FASTA format file.
+'''
+
 '''Additional feature- user specifies nucleotide distrbution. 
 The function takes input from the user for percentage distribution of bass and ensures that all inputs are integers 
 between 0 and 100 and that the total is equal to 100. It retruns a dictionary contaning validated percentages'''
