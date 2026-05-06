@@ -21,6 +21,13 @@ def get_nucleotide_distribution()->dict:
         except ValueError:
             print("Error: percentages must be integers.")
 
+def generate_sequence_custom_distribution (length: int, distribution: dict) -> str:
+    nucleotides=['A','C','T','G']
+    weights = [distribution[n] for n in nucleotides]
+
+    sequence = "".join(random.choices(nucleotides, weights=weights, k=length))
+    return sequence
+
 #Additional feature: translation
 codon_table = {
     "TTT": "Phe", "TTC": "Phe", "TTA": "Leu", "TTG": "Leu",
@@ -66,12 +73,9 @@ def find_motif(sequence: str, motif: str) -> list:
             positions.append(i + 1)
     return positions
 
-def generate_sequence_custom_distribution (length: int, distribution: dict) -> str:
-    nucleotides=['A','C','T','G']
-    weights = [distribution[n] for n in nucleotides]
-
-    sequence = "".join(random.choices(nucleotides, weights=weights, k=length))
-    return sequence
+#Additional feature: in silico transcription
+def transcribe_sequence(sequence: str) -> str:
+    return sequence.upper().replace("T", "U")
 
 def generate_sequence (length: int) -> str:
     """Returns a random DNA sequence of the specified length."""
@@ -168,6 +172,10 @@ def main ():
         print(f"Motif found at positions: {' '.join(map(str, positions))}")
     else:
         print("Motif not found.")
+    rna=transcribe_sequence(sequence)
+    rna_id=seq_id+'_mRNA'
+    format_fasta(rna_id, description, rna)
+    print(f"\nmRNA sequence saved to file: {seq_id}_mRNA.fasta")
 
 if __name__ == "__main__":
     main ()
