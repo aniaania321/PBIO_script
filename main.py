@@ -1,4 +1,32 @@
 import random
+#Additional feature- user specifies nucleotide distrbution
+def get_nucleotide_distribution()->dict:
+    while True:
+        try:
+            A = int(input("Enter percentage for A: "))
+            C = int(input("Enter percentage for C: "))
+            T = int(input("Enter percentage for T: "))
+            G = int(input("Enter percentage for G: "))
+
+            values = [A, C, T, G]
+            if any(value < 0 or value > 100 for value in values):
+                print("Error: each value must be between 0 and 100.")
+                continue
+
+            if sum(values) != 100:
+                print("Error: percentages must sum to 100.")
+                continue
+
+            return {"A": A, "C": C, "T": T, "G": G}
+        except ValueError:
+            print("Error: percentages must be integers.")
+
+def generate_sequence_custom_distribution (length: int, distribution: dict) -> str:
+    nucleotides=['A','C','T','G']
+    weights = [distribution[n] for n in nucleotides]
+
+    sequence = "".join(random.choices(nucleotides, weights=weights, k=length))
+    return sequence
 
 def generate_sequence (length: int) -> str:
     """Returns a random DNA sequence of the specified length."""
@@ -63,7 +91,18 @@ In case of an error, repeats the question."""
 
 def main ():
     length = validate_positive_int("Enter sequence length: ")
-    sequence = generate_sequence(length)
+    while True:
+        custom = input("Would you like to provide distributions? (y/n): ").lower()
+        if custom == "y":
+            distribution = get_nucleotide_distribution()
+            sequence = generate_sequence_custom_distribution(length, distribution)
+            break
+        elif custom == "n":
+            sequence = generate_sequence(length)
+            break
+        else:
+            print("Please enter 'y' or 'n'.")
+
     while True:
         seq_id=input("Enter sequence ID: ")
         if any(c.isspace() for c in seq_id):
