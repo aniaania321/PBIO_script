@@ -21,6 +21,41 @@ def get_nucleotide_distribution()->dict:
         except ValueError:
             print("Error: percentages must be integers.")
 
+#Additional feature: translation
+codon_table = {
+    "TTT": "Phe", "TTC": "Phe", "TTA": "Leu", "TTG": "Leu",
+    "TCT": "Ser", "TCC": "Ser", "TCA": "Ser", "TCG": "Ser",
+    "TAT": "Tyr", "TAC": "Tyr", "TAA": "Stop", "TAG": "Stop",
+    "TGT": "Cys", "TGC": "Cys", "TGA": "Stop", "TGG": "Trp",
+
+    "CTT": "Leu", "CTC": "Leu", "CTA": "Leu", "CTG": "Leu",
+    "CCT": "Pro", "CCC": "Pro", "CCA": "Pro", "CCG": "Pro",
+    "CAT": "His", "CAC": "His", "CAA": "Gln", "CAG": "Gln",
+    "CGT": "Arg", "CGC": "Arg", "CGA": "Arg", "CGG": "Arg",
+
+    "ATT": "Ile", "ATC": "Ile", "ATA": "Ile", "ATG": "Met",
+    "ACT": "Thr", "ACC": "Thr", "ACA": "Thr", "ACG": "Thr",
+    "AAT": "Asn", "AAC": "Asn", "AAA": "Lys", "AAG": "Lys",
+    "AGT": "Ser", "AGC": "Ser", "AGA": "Arg", "AGG": "Arg",
+
+    "GTT": "Val", "GTC": "Val", "GTA": "Val", "GTG": "Val",
+    "GCT": "Ala", "GCC": "Ala", "GCA": "Ala", "GCG": "Ala",
+    "GAT": "Asp", "GAC": "Asp", "GAA": "Glu", "GAG": "Glu",
+    "GGT": "Gly", "GGC": "Gly", "GGA": "Gly", "GGG": "Gly"
+}
+
+def translate_sequence(sequence: str)-> str:
+    protein=[]
+    for i in range(0, len(sequence) - 2, 3):
+        codon = sequence[i:i + 3]
+        amino_acid = codon_table.get(codon, "?")
+        if amino_acid == "Stop":
+            break
+
+        protein.append(amino_acid)
+
+    return " ".join(protein)
+
 def generate_sequence_custom_distribution (length: int, distribution: dict) -> str:
     nucleotides=['A','C','T','G']
     weights = [distribution[n] for n in nucleotides]
@@ -115,6 +150,8 @@ def main ():
     format_fasta(seq_id, description, sequence_with_name)
     print(f"\nSequence saved to file: {seq_id}.fasta")
     print(calculate_stats(sequence))
+    print(f"\nTranslated sequence:")
+    print(translate_sequence(sequence))
 
 if __name__ == "__main__":
     main ()
