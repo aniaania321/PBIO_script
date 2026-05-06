@@ -56,6 +56,16 @@ def translate_sequence(sequence: str)-> str:
 
     return " ".join(protein)
 
+#Additional feature: searching for motifs
+def find_motif(sequence: str, motif: str) -> list:
+    sequence = sequence.upper()
+    motif = motif.upper()
+    positions = []
+    for i in range(len(sequence) - len(motif) + 1):
+        if sequence[i:i + len(motif)] == motif:
+            positions.append(i + 1)
+    return positions
+
 def generate_sequence_custom_distribution (length: int, distribution: dict) -> str:
     nucleotides=['A','C','T','G']
     weights = [distribution[n] for n in nucleotides]
@@ -152,6 +162,12 @@ def main ():
     print(calculate_stats(sequence))
     print(f"\nTranslated sequence:")
     print(translate_sequence(sequence))
+    motif = input("\nEnter motif to search: ")
+    positions = find_motif(sequence, motif)
+    if positions:
+        print(f"Motif found at positions: {' '.join(map(str, positions))}")
+    else:
+        print("Motif not found.")
 
 if __name__ == "__main__":
     main ()
